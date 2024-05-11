@@ -22,5 +22,6 @@ class UserSeeder extends Seeder
 
         $file = new File(['route' => '/storage/images/users/userDefault.png']);
         $user->file()->save($file);
+        $user->assignRole('admin');
     }
 }

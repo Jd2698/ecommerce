@@ -29,6 +29,7 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             $file = new File(['route' => '/storage/images/users/userDefault.png']);
             $user->file()->save($file);
+            $user->assignRole('user');
         });
     }
 
