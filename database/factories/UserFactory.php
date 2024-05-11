@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\File;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -20,6 +22,14 @@ class UserFactory extends Factory
             'password' => 'admin123',
             'remember_token' => Str::random(30),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $file = new File(['route' => '/storage/images/users/userDefault.png']);
+            $user->file()->save($file);
+        });
     }
 
     // public function unverified()

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\File;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
@@ -11,12 +12,15 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
+        $user = User::create([
             'name' => 'Admin',
             'last_name' => '01',
             'email' => 'admin@gmail.com',
             'password' => 'jdelgado',
             'remember_token' => Str::random(30)
         ]);
+
+        $file = new File(['route' => '/storage/images/users/userDefault.png']);
+        $user->file()->save($file);
     }
 }

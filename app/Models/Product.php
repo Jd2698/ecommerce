@@ -17,4 +17,16 @@ class Product extends Model
         'stock',
         'category_id'
     ];
+
+    // Product::with('category')->get();
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    // relación polimórfica
+    public function file()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
 }

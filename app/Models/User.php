@@ -40,4 +40,10 @@ class User extends Authenticatable
     {
         $this->attributes['remember_token'] =  Str::random(30);
     }
+
+    // relación polimórfica
+    public function file()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
 }
