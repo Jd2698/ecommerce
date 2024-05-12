@@ -1,12 +1,21 @@
 <template>
 	<div v-for="(category, index) in categories" :key="index">
-		<a :href="'/categories/' + category.id">{{category.name}}</a>
+		<h2 class="item-category-ecommerce">{{category.name}}</h2>
+		<a :href="'/categories/' + category.id" class="item-category-ecommerce">Ver más</a>
+
+		<section class="container-card-grid">
+			<product-card :products="category.products.slice(0, 4)" />
+		</section>
 	</div>
 </template>
 
 <script>
 	import { ref, onMounted } from "vue";
+	import ProductCard from "../Product/ProductCard.vue";
 	export default {
+		components: {
+			ProductCard,
+		},
 		// props: [],
 		setup(/* props */) {
 			const categories = ref(null);
@@ -27,3 +36,16 @@
 		},
 	};
 </script>
+
+<style>
+.item-category-ecommerce {
+	display: inline-block;
+	margin-bottom: 20px;
+	text-decoration: none;
+	font-size: 2rem;
+	padding-left: 1rem;
+}
+a.item-category-ecommerce {
+	font-size: 1.3rem;
+}
+</style>

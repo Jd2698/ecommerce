@@ -6,3 +6,28 @@
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+body {
+	background: rgba(247, 243, 243, 0.51);
+}
+
+.container-card-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 200px);
+	gap: 3rem;
+	justify-content: center;
+	padding: 2rem 1rem;
+}
+
+.item-card-ecommerce {
+	background: white;
+	overflow: hidden;
+	border-radius: 0.5rem;
+	width: 200px;
+	box-shadow: 0 5px 4px 0 rgba(120, 120, 120, 0.3);
+}
+
+.container-card-grid a {
+	text-decoration: none;
+	color: black;
+}

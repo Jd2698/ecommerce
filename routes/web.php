@@ -22,6 +22,7 @@ Route::group(['prefix' => 'categories', 'controller' => CategoryController::clas
 
 Route::group(['prefix' => 'products', 'controller' => ProductController::class], function () {
     Route::get('/home/{category}', 'home')->name('products.home');
+    Route::get('/{product}', 'show')->name('products.show');
 });
 
 

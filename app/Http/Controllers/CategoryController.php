@@ -11,7 +11,10 @@ class CategoryController extends Controller
 
     public function home()
     {
-        $categories = Category::all();
+        // $categories = Category::with('products')->get();
+        $categories = Category::with(['products' => function ($query) {
+            $query->with('file');
+        }])->get();
         return response()->json(['categories' => $categories], 200);
     }
 
@@ -33,8 +36,7 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        $category_id = $category->id;
-        return view('Products.index', compact('category_id'));
+        return view('Products.index', compact('category'));
     }
 
     public function edit(Category $category)

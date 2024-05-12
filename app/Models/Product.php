@@ -20,13 +20,23 @@ class Product extends Model
         'category_id'
     ];
 
-    protected $appends = ['format_description'];
+    protected $appends = ['format_description', 'format_name'];
 
     public function formatDescription(): Attribute
     {
         return Attribute::make(
             get: function ($value, $attributes) {
                 return Str::limit($attributes['description'], 70,  '...');
+            },
+            // set: fn ($value) => Str::upper($value)
+        );
+    }
+
+    public function formatName(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return Str::limit($attributes['name'], 30,  '...');
             },
             // set: fn ($value) => Str::upper($value)
         );

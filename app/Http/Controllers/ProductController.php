@@ -32,7 +32,8 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        //
+        $product->load('file');
+        return view('Products.show', compact('product'));
     }
 
     public function edit(Product $product)
