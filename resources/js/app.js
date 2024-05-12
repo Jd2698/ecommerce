@@ -7,11 +7,14 @@ import TheCategoryList from './components/Public/Category/TheCategoryList.vue'
 import TheProductList from './components/Public/Product/TheProductList.vue'
 import ShopProduct from './components/Public/Product/ShopProduct.vue'
 
+import AdminProductList from './components/Private/Product/AdminProductList.vue'
+
 const app = createApp({
 	components: {
 		TheCategoryList,
 		TheProductList,
-		ShopProduct
+		ShopProduct,
+		AdminProductList
 	}
 })
 

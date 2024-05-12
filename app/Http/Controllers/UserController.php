@@ -9,9 +9,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('file', 'roles')->first();
-        return view('welcome', compact('users'));
-        // return response()->json(['users' => $users], 200);
+        $users = User::with('file', 'roles')->get();
+        // return view('welcome', compact('users'));
+        return response()->json(['users' => $users], 200);
     }
 
     public function create()

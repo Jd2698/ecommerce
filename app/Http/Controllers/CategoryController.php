@@ -36,7 +36,7 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        return view('Products.index', compact('category'));
+        return view('Products.client.index', compact('category'));
     }
 
     public function edit(Category $category)

@@ -16,13 +16,16 @@ Route::group(['prefix' => 'users', 'controller' => UserController::class], funct
 });
 
 Route::group(['prefix' => 'categories', 'controller' => CategoryController::class], function () {
-    Route::get('/home', 'home')->name('categories.home');
-    Route::get('/{category}', 'show')->name('categories.show');
+    Route::get('/home', 'home')->name('categories.home'); //client
+    Route::get('/{category}', 'show')->name('categories.show');  //client - products
 });
 
 Route::group(['prefix' => 'products', 'controller' => ProductController::class], function () {
-    Route::get('/home/{category}', 'home')->name('products.home');
-    Route::get('/{product}', 'show')->name('products.show');
+    Route::get('/home/{category}', 'home')->name('products.home');  //client
+    Route::get('/buscador', 'buscador')->name('products.buscador');  //client
+    Route::get('/{product}', 'show')->name('products.show');  //client - shop
+
+    Route::get('/', 'index')->name('products.index');  //admin
 });
 
 

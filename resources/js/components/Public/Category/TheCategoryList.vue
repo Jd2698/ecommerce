@@ -40,12 +40,11 @@
 <style>
 .item-category-ecommerce {
 	display: inline-block;
-	margin-bottom: 20px;
 	text-decoration: none;
-	font-size: 2rem;
+	font-size: 1.5rem;
 	padding-left: 1rem;
 }
 a.item-category-ecommerce {
-	font-size: 1.3rem;
+	font-size: 1rem;
 }
 </style>

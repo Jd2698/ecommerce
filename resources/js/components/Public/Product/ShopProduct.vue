@@ -51,8 +51,9 @@
 
 .shop-item_container-body {
 	width: 60%;
-	padding: 0 1rem;
+	padding: 1rem;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-around;
 }
 </style>
