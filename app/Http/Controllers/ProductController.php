@@ -43,13 +43,14 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        //
+        return response()->json(['info' => 'llegó'], 200);
     }
 
     public function show(Product $product)
     {
+        $session = auth()->check();
         $product->load('file');
-        return view('Products.client.show', compact('product'));
+        return view('Products.client.show', compact('product', 'session'));
     }
 
     public function edit(Product $product)

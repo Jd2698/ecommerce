@@ -9,7 +9,7 @@
 				<p>$ {{product.price}}</p>
 				<p>{{product.description}}</p>
 				<span>Stock: {{product.stock}}</span>
-				<button class="btn border border-black">Add to cart</button>
+				<button class="btn border border-black" @click="validarSesion">Add to cart</button>
 			</div>
 		</section>
 	</div>
@@ -18,11 +18,30 @@
 <script>
 	import { ref, onMounted } from "vue";
 	export default {
-		props: ["product"],
+		props: ["product", "session"],
 		setup(props) {
 			// onMounted(() => getProducts());
 
-			return {};
+			const validarSesion = () => {
+				if (!props.session) {
+					Swal.fire({
+						title: "¿Iniciar sesión?",
+						text: "Para agregar productos necesita iniciar sesión",
+						icon: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#367932",
+						cancelButtonColor: "#d33",
+						confirmButtonText: "Iniciar sesión",
+					}).then((result) => {
+						if (result.isConfirmed) {
+							window.location.href = "/login";
+						}
+					});
+				} else {
+					console.log("Hay que agregarlo al carrito");
+				}
+			};
+			return { validarSesion };
 		},
 	};
 </script>
