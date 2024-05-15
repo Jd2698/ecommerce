@@ -26,15 +26,16 @@ Route::group(['prefix' => 'categories', 'controller' => CategoryController::clas
 Route::group(['prefix' => 'products', 'controller' => ProductController::class], function () {
     Route::get('/home/{category}', 'home')->name('products.home');  //client
     Route::get('/buscador', 'buscador')->name('products.buscador');  //client
-    Route::get('/{product}', 'show')->name('products.show');  //client - shop
+    Route::get('/{product}', 'show')->name('products.show');  //client - shop -admin
 });
 
 // private
 Route::group(['middleware' => ['auth']], function () {
-
     Route::group(['prefix' => 'products', 'middleware' => ['role:admin'], 'controller' => ProductController::class], function () {
         Route::get('/', 'index')->name('products.index');  //admin
         Route::post('/', 'store')->name('products.store');  //admin
+        Route::post('/update/{product}', 'update')->name('products.update');  //admin
+        Route::delete('/{product}', 'destroy')->name('products.destroy');  //admin
     });
 });
 

@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Traits\UploadFile;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\Product\ProductRequest;
+use App\Http\Requests\Product\ProductUpdateRequest;
 
 class ProductController extends Controller
 {
+    use UploadFile;
 
     public function home(Category $category)
     {
-        $products = Product::with('file')->where('category_id', $category->id)->get();
+        $products = Product::with('file')->where('category_id', $category->id)->where('stock', '>', '0')->get();
         return response()->json(['products' => $products], 200);
     }
 
@@ -31,7 +36,7 @@ class ProductController extends Controller
             return view('Products.admin.index');
         } else {
             // $products = Product::query();
-            $products = Product::with('file')->get();
+            $products = Product::with('file', 'category')->get();
             return DataTables::of($products)->toJson();
         }
     }
@@ -41,16 +46,30 @@ class ProductController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        return response()->json(['info' => 'llegó'], 200);
+        try {
+            DB::beginTransaction();
+            $product = new Product($request->all());
+            $product->save();
+            $this->uploadFile($product, $request);
+            DB::commit();
+            return response()->json([], 200);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
     }
 
-    public function show(Product $product)
+    public function show(Request $request, Product $product)
     {
-        $session = auth()->check();
         $product->load('file');
-        return view('Products.client.show', compact('product', 'session'));
+        if (!$request->ajax()) {
+            $session = auth()->check();
+            return view('Products.client.show', compact('product', 'session'));
+        } else {
+            return response()->json(['product' => $product], 200);
+        }
     }
 
     public function edit(Product $product)
@@ -58,13 +77,27 @@ class ProductController extends Controller
         //
     }
 
-    public function update(Request $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
-        //
+        if (!$request->hasFile('file')) unset($request['file']);
+
+        try {
+            DB::beginTransaction();
+            $product->update($request->all());
+
+            $this->uploadFile($product, $request);
+            DB::commit();
+            return response()->json([], 204);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
     }
 
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        $this->deleteFile($product);
+        return response()->json([], 204);
     }
 }

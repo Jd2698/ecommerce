@@ -12,8 +12,8 @@ class CategoryController extends Controller
     public function home()
     {
         // $categories = Category::with('products')->get();
-        $categories = Category::with(['products' => function ($query) {
-            $query->with('file');
+        $categories = Category::has('products')->with(['products' => function ($query) {
+            $query->where('stock', '>', 0)->with('file');
         }])->get();
         return response()->json(['categories' => $categories], 200);
     }

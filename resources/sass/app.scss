@@ -36,6 +36,12 @@ body {
 	width: 200px;
 	box-shadow: 0 5px 4px 0 rgba(120, 120, 120, 0.3);
 }
+.item-card-ecommerce img {
+	height: 200px;
+	width: 100%;
+	object-fit: cover;
+	object-position: top;
+}
 
 .container-card-grid a {
 	text-decoration: none;

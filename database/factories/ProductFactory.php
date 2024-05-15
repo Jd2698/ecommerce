@@ -25,7 +25,7 @@ class ProductFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Product $product) {
-            $file = new File(['route' => '/storage/images/products/productDefault.png']);
+            $file = new File(['route' => '/storage/images/products/default.png']);
             $product->file()->save($file);
         });
     }
