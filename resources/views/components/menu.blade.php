@@ -41,13 +41,15 @@
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
                             @role('admin')
-                                {{-- User --}}
-                                {{-- {{ route('users.index') }} --}}
+                                <a class="dropdown-item" href="{{ route('users.index') }}">
+                                    Users
+                                </a>
+
                                 <a class="dropdown-item" href="{{ route('products.index') }}">
                                     Products
                                 </a>
 
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href=" {{ route('categories.index') }}">
                                     Categories
                                 </a>
                             @endrole

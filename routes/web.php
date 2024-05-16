@@ -12,14 +12,10 @@ Route::get('/', function () {
     return view('index');
 });
 
-// public
-Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
-    Route::get('/', 'index')->name('users.index'); //admin
-});
-
+//categorías
 Route::group(['prefix' => 'categories', 'controller' => CategoryController::class], function () {
     Route::get('/home', 'home')->name('categories.home'); //client
-    Route::get('/{category}', 'show')->name('categories.show');  //client - products
+    Route::get('/home/{category}', 'homeShowProducts');  //products
     Route::get('/', 'index')->name('categories.index'); //client - admin
 });
 
@@ -31,11 +27,25 @@ Route::group(['prefix' => 'products', 'controller' => ProductController::class],
 
 // private
 Route::group(['middleware' => ['auth']], function () {
+    Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
+        Route::get('/get-all', 'getAll')->name('users.getAll'); //admin
+        Route::get('/', 'index')->name('users.index'); //admin
+    });
+
     Route::group(['prefix' => 'products', 'middleware' => ['role:admin'], 'controller' => ProductController::class], function () {
         Route::get('/', 'index')->name('products.index');  //admin
         Route::post('/', 'store')->name('products.store');  //admin
         Route::post('/update/{product}', 'update')->name('products.update');  //admin
         Route::delete('/{product}', 'destroy')->name('products.destroy');  //admin
+    });
+
+    Route::group(['prefix' => 'categories', 'controller' => CategoryController::class], function () {
+        Route::get('/get-all', 'getAll')->name('categories.getAll'); //admin
+        Route::get('/', 'index')->name('categories.index'); //admin
+        Route::post('/', 'store')->name('categories.store');  //admin
+        Route::get('/{category}', 'show')->name('categories.show');  //admin
+        Route::put('/{category}', 'update')->name('categories.update');  //admin
+        Route::delete('/{category}', 'destroy')->name('categories.destroy');  //admin
     });
 });
 

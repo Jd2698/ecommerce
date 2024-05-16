@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-    public function index()
+    public function getAll()
     {
         $users = User::with('file', 'roles')->get();
-        // return view('welcome', compact('users'));
-        return response()->json(['users' => $users], 200);
+        return DataTables::of($users)->toJson();
+    }
+    public function index()
+    {
+        return view('Users.index');
     }
 
     public function create()

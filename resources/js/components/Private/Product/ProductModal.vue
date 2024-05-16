@@ -96,10 +96,9 @@
 	import { ref, getCurrentInstance, handleError, computed, onMounted } from "vue";
 	import { Field, Form } from "vee-validate";
 	import * as yup from "yup";
-	// import BackendError from "../components/BackendError.vue";
 
 	export default {
-		props: ["product_data", "categories"],
+		props: ["product_data"],
 		components: { Field, Form },
 		setup(props) {
 			const instance = getCurrentInstance();

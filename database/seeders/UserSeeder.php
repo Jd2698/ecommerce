@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(30)
         ]);
 
-        $file = new File(['route' => '/storage/images/users/userDefault.png']);
+        $file = new File(['route' => '/storage/images/users/default.png']);
         $user->file()->save($file);
         $user->assignRole('admin');
     }

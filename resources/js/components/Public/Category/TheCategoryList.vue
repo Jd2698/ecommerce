@@ -1,7 +1,7 @@
 <template>
 	<div v-for="(category, index) in categories" :key="index">
 		<h2 class="item-category-ecommerce">{{category.name}}</h2>
-		<a :href="'/categories/' + category.id" class="item-category-ecommerce">Ver más</a>
+		<a :href="'/categories/home/' + category.id" class="item-category-ecommerce">Ver más</a>
 
 		<section class="container-card-grid">
 			<product-card :products="category.products.slice(0, 4)" />
