@@ -1,7 +1,7 @@
 <template>
 	<div class="card m-5">
 		<div class="card-header d-flex justify-content-end">
-			<button class="btn btn-primary" @click="createUser">Crear categoria</button>
+			<button class="btn btn-success" @click="createUser">Crear Usuario</button>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive my-4 mx-2">
@@ -38,6 +38,7 @@
 
 	export default {
 		components: { UserModal },
+		props: [],
 		setup() {
 			const user = ref(null);
 			const table = ref(null);
@@ -98,13 +99,13 @@
 							searchable: false,
 							render: (data, type, row, meta) => {
 								return `<div class="d-flex justify-content-center" data-role='actions'>
-																																																																																																																									            <button onclick='event.preventDefault();' data-id='${row.id}' role='edit' class="btn btn-warning btn-sm">
-																																																																																																																									              <i class='fas fa-pencil-alt' data-id='${row.id}' role='edit'></i>
-																																																																																																																															</button>
-																																																																																																																									            <button onclick='event.preventDefault();' data-id='${row.id}' role='delete' class="btn btn-danger btn-sm ms-1">
-																																																																																																																									            	<i class='fas fa-trash-alt' data-id='${row.id}' role='delete'></i>
-																																																																																																																															</button>
-																																																																																																																									          </div>`;
+																																																																																																																																													            <button onclick='event.preventDefault();' data-id='${row.id}' role='edit' class="btn btn-warning btn-sm">
+																																																																																																																																													              <i class='fas fa-pencil-alt' data-id='${row.id}' role='edit'></i>
+																																																																																																																																																			</button>
+																																																																																																																																													            <button onclick='event.preventDefault();' data-id='${row.id}' role='delete' class="btn btn-danger btn-sm ms-1">
+																																																																																																																																													            	<i class='fas fa-trash-alt' data-id='${row.id}' role='delete'></i>
+																																																																																																																																																			</button>
+																																																																																																																																													          </div>`;
 							},
 						},
 					],
@@ -116,9 +117,9 @@
 				const user_id = button.getAttribute("data-id");
 
 				if (button.getAttribute("role") == "edit") {
-					// editUser(user_id);
+					editUser(user_id);
 				} else if (button.getAttribute("role") == "delete") {
-					// deleteCategory(user_id);
+					deleteUser(user_id);
 				}
 			};
 
@@ -129,9 +130,9 @@
 
 			const editUser = async (id) => {
 				try {
-					// const { data } = await axios.get(`/users/${id}`);
-					// category.value = data.category;
-					// await openModal("user_modal");
+					const { data } = await axios.get(`/users/${id}`);
+					user.value = data.user_data;
+					await openModal("user_modal");
 				} catch (error) {
 					await handlerErrors(error);
 				}
@@ -140,9 +141,9 @@
 			const deleteUser = async (id) => {
 				if (!(await deleteMessage())) return;
 				try {
-					// await axios.delete(`/users/${id}`);
-					// await successMessage({ is_delete: true });
-					// reloadState();
+					await axios.delete(`/users/${id}`);
+					await successMessage({ is_delete: true });
+					reloadState();
 				} catch (error) {
 					await handlerErrors(error);
 				}

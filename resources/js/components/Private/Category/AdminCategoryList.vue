@@ -1,7 +1,7 @@
 <template>
 	<div class="card m-5">
 		<div class="card-header d-flex justify-content-end">
-			<button class="btn btn-primary" @click="createCategory">Crear categoria</button>
+			<button class="btn btn-success" @click="createCategory">Crear categoria</button>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive my-4 mx-2">
@@ -54,7 +54,7 @@
 					autoWidth: false,
 					dom: "Bfrtip",
 					buttons: ["pageLength", "excel", "pdf", "copy"],
-					ajax: `/categories/get-all`,
+					ajax: `/categories/get-all-dt`,
 					columns: [
 						{
 							data: "name",
@@ -68,13 +68,13 @@
 							searchable: false,
 							render: (data, type, row, meta) => {
 								return `<div class="d-flex justify-content-center" data-role='actions'>
-																																																																																            <button onclick='event.preventDefault();' data-id='${row.id}' role='edit' class="btn btn-warning btn-sm">
-																																																																																              <i class='fas fa-pencil-alt' data-id='${row.id}' role='edit'></i>
-																																																																																						</button>
-																																																																																            <button onclick='event.preventDefault();' data-id='${row.id}' role='delete' class="btn btn-danger btn-sm ms-1">
-																																																																																            	<i class='fas fa-trash-alt' data-id='${row.id}' role='delete'></i>
-																																																																																						</button>
-																																																																																          </div>`;
+																																																																																		            <button onclick='event.preventDefault();' data-id='${row.id}' role='edit' class="btn btn-warning btn-sm">
+																																																																																		              <i class='fas fa-pencil-alt' data-id='${row.id}' role='edit'></i>
+																																																																																								</button>
+																																																																																		            <button onclick='event.preventDefault();' data-id='${row.id}' role='delete' class="btn btn-danger btn-sm ms-1">
+																																																																																		            	<i class='fas fa-trash-alt' data-id='${row.id}' role='delete'></i>
+																																																																																								</button>
+																																																																																		          </div>`;
 							},
 						},
 					],

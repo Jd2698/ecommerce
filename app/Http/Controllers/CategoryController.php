@@ -19,6 +19,12 @@ class CategoryController extends Controller
         return response()->json(['categories' => $categories], 200);
     }
 
+    public function getAll()
+    {
+        $categories = Category::all();
+        return response()->json(['categories' => $categories], 200);
+    }
+
     public function homeShowProducts(Category $category)
     {
         return view('Products.client.index', compact('category'));
@@ -26,7 +32,7 @@ class CategoryController extends Controller
 
     //private
 
-    public function getAll()
+    public function getAllDt()
     {
         $categories = Category::all();
         return DataTables::of($categories)->toJson();

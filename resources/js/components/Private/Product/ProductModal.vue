@@ -7,8 +7,6 @@
 					<button type="button" class="btn-close" @click="closeModal" aria-label="Close"></button>
 				</div>
 
-				<!-- <backend-error :errors="back_errors" /> -->
-
 				<Form @submit="saveProduct" :validation-schema="schema" ref="form">
 					<div class="modal-body">
 						<section class="row">
@@ -93,7 +91,7 @@
 
 <script>
 	import { handlerErrors, successMessage } from "@/helpers/Alerts.js";
-	import { ref, getCurrentInstance, handleError, computed, onMounted } from "vue";
+	import { ref, getCurrentInstance, computed, onMounted } from "vue";
 	import { Field, Form } from "vee-validate";
 	import * as yup from "yup";
 
@@ -112,19 +110,19 @@
 
 			const file = ref(null);
 			const back_errors = ref({});
+
 			const load_category = ref(false);
 			const categories_data = ref([]);
 
 			onMounted(() => {
 				getCategories();
-				// console.log(props);
 			});
 
 			const getCategories = async () => {
 				try {
 					const {
 						data: { categories },
-					} = await axios.get("/categories");
+					} = await axios.get("/categories/get-all");
 					categories_data.value = categories;
 					load_category.value = true;
 				} catch (error) {

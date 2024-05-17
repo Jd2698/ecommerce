@@ -20,12 +20,9 @@ class UserRequest extends FormRequest
 
     public function rules()
     {
-        if ($this->method() == 'PUT') {
-            $this->rules['email'] = ['required', 'email', 'unique:users,email,' . $this->user->id];
-            $this->rules['password'] = ['nullable', 'confirmed', 'string', 'min:8'];
-        }
 
-        $this->rules['role'] = ['required', 'string', 'in:user,admin,librarian'];
+        $this->rules['file'] = ['required', 'image'];
+        $this->rules['role'] = ['required', 'string', 'in:user,admin'];
 
         return $this->rules;
     }
