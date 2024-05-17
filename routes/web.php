@@ -27,6 +27,9 @@ Route::group(['prefix' => 'products', 'controller' => ProductController::class],
 
 // private
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('/cart', [ProductController::class, 'cart'])->name('products.cart');
+
     Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
         Route::get('/get-all', 'getAll')->name('users.getAll'); //admin
         Route::get('/getRoles', 'getRoles'); //admin
@@ -38,6 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::group(['prefix' => 'products', 'middleware' => ['role:admin'], 'controller' => ProductController::class], function () {
+
         Route::get('/', 'index')->name('products.index');  //admin
         Route::post('/', 'store')->name('products.store');  //admin
         Route::post('/update/{product}', 'update')->name('products.update');  //admin

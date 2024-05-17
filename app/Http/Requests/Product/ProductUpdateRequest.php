@@ -13,9 +13,12 @@ class ProductUpdateRequest extends ProductRequest
 
     public function rules()
     {
-        // $this->rules['file'] = ['nullable', 'image'];
-        $this->rules['file'] = ['nullable'];
+        $this->rules['file'] = ['nullable', 'image'];
         $this->rules['name'] = ['required', 'string', 'unique:products,name,' . $this->product->id];
+
+        if (!$this->hasFile('file')) {
+            $this->rules['file'] = ['nullable'];
+        }
 
         return $this->rules;
     }

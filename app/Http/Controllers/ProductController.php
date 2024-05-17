@@ -30,6 +30,11 @@ class ProductController extends Controller
         return response()->json(['products' => $products], 200);
     }
 
+    public function cart()
+    {
+        return view('Cart.index');
+    }
+
     public function index(Request $request)
     {
         if (!$request->ajax()) {

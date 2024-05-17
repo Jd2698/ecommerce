@@ -11,6 +11,8 @@ import AdminProductList from './components/Private/Product/AdminProductList.vue'
 import AdminCategoryList from './components/Private/Category/AdminCategoryList.vue'
 import AdminUserList from './components/Private/User/AdminUserList.vue'
 
+import ProductCart from './components/Public/Cart/ProductCart.vue'
+
 const app = createApp({
 	components: {
 		TheCategoryList,
@@ -18,7 +20,8 @@ const app = createApp({
 		ShopProduct,
 		AdminProductList,
 		AdminCategoryList,
-		AdminUserList
+		AdminUserList,
+		ProductCart
 	}
 })
 

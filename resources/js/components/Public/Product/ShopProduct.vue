@@ -17,10 +17,14 @@
 
 <script>
 	import { ref, onMounted } from "vue";
+	import { addObject } from "@/helpers/LocalStorage";
 	export default {
-		props: ["product", "session"],
+		props: ["product", "session", "user"],
 		setup(props) {
-			// onMounted(() => getProducts());
+			const user_data = ref({});
+			onMounted(() => {
+				user_data.value = JSON.parse(props.user);
+			});
 
 			const validarSesion = () => {
 				if (!props.session) {
@@ -38,7 +42,23 @@
 						}
 					});
 				} else {
-					console.log("Hay que agregarlo al carrito");
+					props.product.quantity = 1;
+					props.product.subtotal = props.product.price;
+
+					let objectData = {
+						user: user_data.value.id,
+						product: props.product.id,
+					};
+
+					addObject(props.product, objectData);
+
+					Swal.fire({
+						position: "top-end",
+						icon: "success",
+						title: "se agregó al carrito",
+						showConfirmButton: false,
+						timer: 1200,
+					});
 				}
 			};
 			return { validarSesion };
