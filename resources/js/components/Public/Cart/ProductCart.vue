@@ -38,7 +38,7 @@
 	import {
 		addObject,
 		getObject,
-		getObjects,
+		getProductsObject,
 		deleteObject,
 		deleteObjects,
 		addTotal,
@@ -60,13 +60,9 @@
 			product.quantity = newQuantity;
 			product.subtotal = newSubtotal;
 
-			let objectData = {
-				user: user_data.value.id,
-				product: product.id,
-			};
-
-			addObject(product, objectData);
-			total.value = addTotal({ user: user_data.value });
+			const key = `${user_data.value.id}-${product.id}`;
+			addObject(key, product);
+			total.value = addTotal(user_data.value.id);
 		}
 	};
 	const increaseProduct = (product) => {
@@ -77,26 +73,24 @@
 			product.quantity = newQuantity;
 			product.subtotal = newSubtotal;
 
-			let objectData = {
-				user: user_data.value.id,
-				product: product.id,
-			};
-
-			addObject(product, objectData);
-			total.value = addTotal({ user: user_data.value });
+			const key = `${user_data.value.id}-${product.id}`;
+			addObject(key, product);
+			total.value = addTotal(user_data.value.id);
 		}
 	};
 
 	const removeProduct = (productId) => {
-		deleteObject({ user: user_data.value.id, product: productId });
-		products.value = getObjects(user_data.value.id);
-		total.value = addTotal({ user: user_data.value });
+		const key = `${user_data.value.id}-${productId}`;
+		deleteObject(key);
+
+		products.value = getProductsObject(user_data.value.id);
+		total.value = addTotal(user_data.value.id);
 	};
 
 	const cleanCart = (productId) => {
 		deleteObjects(productId);
-		products.value = getObjects(user_data.value.id);
-		total.value = addTotal({ user: user_data.value });
+		products.value = getProductsObject(user_data.value.id);
+		total.value = addTotal(user_data.value.id);
 	};
 	const buyAlert = () => {
 		Swal.fire({
@@ -107,8 +101,8 @@
 
 	const index = () => {
 		user_data.value = JSON.parse(props.user);
-		products.value = getObjects(user_data.value.id);
-		total.value = addTotal({ user: user_data.value });
+		products.value = getProductsObject(user_data.value.id);
+		total.value = addTotal(user_data.value.id);
 	};
 
 	onMounted(() => index());

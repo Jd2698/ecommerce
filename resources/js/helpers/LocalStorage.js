@@ -1,8 +1,8 @@
-export const getObjects = id => {
+export const getProductsObject = user_id => {
 	let data = []
 	for (let i = 0; i < localStorage.length; i++) {
 		let clave = localStorage.key(i)
-		if (!clave.includes('invoiceTotal') && clave.startsWith(`${id}-`)) {
+		if (!clave.includes('invoiceTotal') && clave.startsWith(`${user_id}-`)) {
 			let itemData = localStorage.getItem(clave)
 
 			let obj = JSON.parse(itemData)
@@ -13,20 +13,16 @@ export const getObjects = id => {
 	return data
 }
 
-export const deleteObject = objData => {
-	console.log(objData)
-	localStorage.removeItem(`${objData.user}-${objData.product}`)
+export const deleteObject = key => {
+	localStorage.removeItem(key)
 }
 
-export const addObject = (obj, objData) => {
-	let keyName
-	if ('invoiceTotal' in objData) {
-		keyName = `${objData.user}-${objData.invoiceTotal}`
-	} else {
-		keyName = `${objData.user}-${objData.product}`
-	}
+export const addObject = (key, obj) => {
+	localStorage.setItem(key, JSON.stringify(obj))
+}
 
-	localStorage.setItem(keyName, JSON.stringify(obj))
+const addTotalObject = (key, value) => {
+	localStorage.setItem(key, value)
 }
 
 export const getObject = index => {
@@ -34,30 +30,26 @@ export const getObject = index => {
 	return item
 }
 
-export const addTotal = objData => {
+export const addTotal = user_id => {
 	let total = 0
 	for (let i = 0; i < localStorage.length; i++) {
-		let clave = localStorage.key(i)
-		if (
-			!clave.includes('invoiceTotal') &&
-			clave.startsWith(`${objData.user.id}-`)
-		) {
-			let clave = localStorage.key(i)
+		const clave = localStorage.key(i)
+		if (!clave.includes('invoiceTotal') && clave.startsWith(`${user_id}-`)) {
 			let itemData = localStorage.getItem(clave)
-
 			let obj = JSON.parse(itemData)
 
 			total += obj.subtotal
 		}
 	}
-	addObject(total, { invoiceTotal: 'invoiceTotal', user: objData.user.id })
+	let key = `${user_id}-invoiceTotal`
+	addTotalObject(key, total)
 	return total
 }
 
-export const deleteObjects = id => {
+export const deleteObjects = user_id => {
 	for (let i = 0; i < localStorage.length; i++) {
 		let clave = localStorage.key(i)
-		if (clave.startsWith(`${id}-`)) {
+		if (clave.startsWith(`${user_id}-`)) {
 			localStorage.removeItem(clave)
 		}
 	}
