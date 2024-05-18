@@ -1,5 +1,4 @@
 <template>
-
 	<div class="d-flex gap-4 mx-4">
 		<li class="list-unstyled container-items-cart">
 			<ul v-for="(product, index) in products" :key="index" class="item-cart">
@@ -27,7 +26,10 @@
 		</li>
 		<div class="container-info">
 			<p>Total: ${{total}}</p>
-			<button class="btn btn-success" @click="buyAlert">Realizar compra</button>
+			<div class="btn-group" style="width: 100%">
+				<button class="btn btn-success" @click="buyAlert">Realizar compra</button>
+				<button class="btn btn-danger" @click="cleanCart(user_data.id)">Limpiar carrito</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -38,6 +40,7 @@
 		getObject,
 		getObjects,
 		deleteObject,
+		deleteObjects,
 		addTotal,
 	} from "@/helpers/LocalStorage";
 
@@ -57,8 +60,13 @@
 			product.quantity = newQuantity;
 			product.subtotal = newSubtotal;
 
-			addObject(product, product.id);
-			total.value = addTotal();
+			let objectData = {
+				user: user_data.value.id,
+				product: product.id,
+			};
+
+			addObject(product, objectData);
+			total.value = addTotal({ user: user_data.value });
 		}
 	};
 	const increaseProduct = (product) => {
@@ -69,17 +77,27 @@
 			product.quantity = newQuantity;
 			product.subtotal = newSubtotal;
 
-			addObject(product, product.id);
-			total.value = addTotal();
+			let objectData = {
+				user: user_data.value.id,
+				product: product.id,
+			};
+
+			addObject(product, objectData);
+			total.value = addTotal({ user: user_data.value });
 		}
 	};
 
-	const removeProduct = (id) => {
-		deleteObject(id);
-		products.value = getObjects();
-		total.value = addTotal();
+	const removeProduct = (productId) => {
+		deleteObject({ user: user_data.value.id, product: productId });
+		products.value = getObjects(user_data.value.id);
+		total.value = addTotal({ user: user_data.value });
 	};
 
+	const cleanCart = (productId) => {
+		deleteObjects(productId);
+		products.value = getObjects(user_data.value.id);
+		total.value = addTotal({ user: user_data.value });
+	};
 	const buyAlert = () => {
 		Swal.fire({
 			title: "¡Aún no está disponible!",
@@ -90,7 +108,7 @@
 	const index = () => {
 		user_data.value = JSON.parse(props.user);
 		products.value = getObjects(user_data.value.id);
-		// total.value = addTotal();
+		total.value = addTotal({ user: user_data.value });
 	};
 
 	onMounted(() => index());

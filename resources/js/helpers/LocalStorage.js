@@ -2,7 +2,7 @@ export const getObjects = id => {
 	let data = []
 	for (let i = 0; i < localStorage.length; i++) {
 		let clave = localStorage.key(i)
-		if (!clave.includes('product-invoiceTotal') && clave.startsWith(`${id}-`)) {
+		if (!clave.includes('invoiceTotal') && clave.startsWith(`${id}-`)) {
 			let itemData = localStorage.getItem(clave)
 
 			let obj = JSON.parse(itemData)
@@ -14,14 +14,19 @@ export const getObjects = id => {
 }
 
 export const deleteObject = objData => {
-	// userId-productId
 	console.log(objData)
-	// localStorage.removeItem()
+	localStorage.removeItem(`${objData.user}-${objData.product}`)
 }
 
-export const addObject = (objProduct, objData) => {
-	let keyName = `${objData.user}-${objData.product}`
-	localStorage.setItem(keyName, JSON.stringify(objProduct))
+export const addObject = (obj, objData) => {
+	let keyName
+	if ('invoiceTotal' in objData) {
+		keyName = `${objData.user}-${objData.invoiceTotal}`
+	} else {
+		keyName = `${objData.user}-${objData.product}`
+	}
+
+	localStorage.setItem(keyName, JSON.stringify(obj))
 }
 
 export const getObject = index => {
@@ -29,11 +34,14 @@ export const getObject = index => {
 	return item
 }
 
-export const addTotal = () => {
+export const addTotal = objData => {
 	let total = 0
 	for (let i = 0; i < localStorage.length; i++) {
 		let clave = localStorage.key(i)
-		if (!clave.includes('product-invoiceTotal')) {
+		if (
+			!clave.includes('invoiceTotal') &&
+			clave.startsWith(`${objData.user.id}-`)
+		) {
 			let clave = localStorage.key(i)
 			let itemData = localStorage.getItem(clave)
 
@@ -42,6 +50,15 @@ export const addTotal = () => {
 			total += obj.subtotal
 		}
 	}
-	addObject(total, 'invoiceTotal')
+	addObject(total, { invoiceTotal: 'invoiceTotal', user: objData.user.id })
 	return total
+}
+
+export const deleteObjects = id => {
+	for (let i = 0; i < localStorage.length; i++) {
+		let clave = localStorage.key(i)
+		if (clave.startsWith(`${id}-`)) {
+			localStorage.removeItem(clave)
+		}
+	}
 }

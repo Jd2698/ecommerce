@@ -57,7 +57,7 @@
 						icon: "success",
 						title: "se agregó al carrito",
 						showConfirmButton: false,
-						timer: 1200,
+						timer: 800,
 					});
 				}
 			};

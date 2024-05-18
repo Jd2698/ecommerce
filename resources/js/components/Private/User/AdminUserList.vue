@@ -64,7 +64,7 @@
 							orderable: false,
 							searchable: false,
 							render: (data, type, row, meta) => {
-								return `<img src="${row.file.route}" alt="Product Image" style="width: 100px;">`;
+								return `<img src="${row.file.route}" alt="Product Image" style="display:block; margin: 0 auto;width: 100px; height: 100px; object-fit:cover; object-position:top; border-radius: 5px;">`;
 							},
 						},
 						{
@@ -99,13 +99,13 @@
 							searchable: false,
 							render: (data, type, row, meta) => {
 								return `<div class="d-flex justify-content-center" data-role='actions'>
-																																																																																																																																													            <button onclick='event.preventDefault();' data-id='${row.id}' role='edit' class="btn btn-warning btn-sm">
-																																																																																																																																													              <i class='fas fa-pencil-alt' data-id='${row.id}' role='edit'></i>
-																																																																																																																																																			</button>
-																																																																																																																																													            <button onclick='event.preventDefault();' data-id='${row.id}' role='delete' class="btn btn-danger btn-sm ms-1">
-																																																																																																																																													            	<i class='fas fa-trash-alt' data-id='${row.id}' role='delete'></i>
-																																																																																																																																																			</button>
-																																																																																																																																													          </div>`;
+																																																																																																																																																						            <button onclick='event.preventDefault();' data-id='${row.id}' role='edit' class="btn btn-warning btn-sm">
+																																																																																																																																																						              <i class='fas fa-pencil-alt' data-id='${row.id}' role='edit'></i>
+																																																																																																																																																												</button>
+																																																																																																																																																						            <button onclick='event.preventDefault();' data-id='${row.id}' role='delete' class="btn btn-danger btn-sm ms-1">
+																																																																																																																																																						            	<i class='fas fa-trash-alt' data-id='${row.id}' role='delete'></i>
+																																																																																																																																																												</button>
+																																																																																																																																																						          </div>`;
 							},
 						},
 					],

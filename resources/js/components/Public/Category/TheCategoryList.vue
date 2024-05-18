@@ -4,7 +4,7 @@
 		<a :href="'/categories/home/' + category.id" class="item-category-ecommerce">Ver más</a>
 
 		<section class="container-card-grid">
-			<product-card :products="category.products.slice(0, 4)" />
+			<product-card :products="category.products.slice(0, 5)" />
 		</section>
 	</div>
 </template>
