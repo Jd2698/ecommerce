@@ -17,7 +17,7 @@
 			ProductCard,
 		},
 		// props: [],
-		setup(/* props */) {
+		setup() {
 			const categories = ref(null);
 
 			const getCategories = () => {

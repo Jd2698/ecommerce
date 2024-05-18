@@ -30,14 +30,14 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/cart', [ProductController::class, 'cart'])->name('products.cart');
 
-    Route::group(['prefix' => 'users', 'controller' => UserController::class], function () {
+    Route::group(['prefix' => 'users', 'middleware' => ['role:admin'], 'controller' => UserController::class], function () {
         Route::get('/get-all', 'getAll')->name('users.getAll'); //admin
         Route::get('/getRoles', 'getRoles'); //admin
-        Route::get('/', 'index')->name('users.index'); //admin
+        Route::get('/', 'index')->name('users.index')->middleware('can:users.index');; //admin
         Route::post('/', 'store')->name('users.store');  //admin
-        Route::get('/{user}', 'show')->name('users.show');
-        Route::post('/update/{user}', 'update')->name('users.update');
-        Route::delete('/{user}', 'destroy')->name('users.destroy');
+        Route::get('/{user}', 'show')->name('users.show'); //admin
+        Route::post('/update/{user}', 'update')->name('users.update'); //admin
+        Route::delete('/{user}', 'destroy')->name('users.destroy'); //admin
     });
 
     Route::group(['prefix' => 'products', 'middleware' => ['role:admin'], 'controller' => ProductController::class], function () {
@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/{product}', 'destroy')->name('products.destroy');  //admin
     });
 
-    Route::group(['prefix' => 'categories', 'controller' => CategoryController::class], function () {
+    Route::group(['prefix' => 'categories', 'middleware' => ['role:admin'], 'controller' => CategoryController::class], function () {
         Route::get('/get-all-dt', 'getAllDt')->name('categories.getAllDt'); //admin
         Route::get('/get-all', 'getAll')->name('categories.getAll'); //admin
         Route::get('/', 'index')->name('categories.index'); //admin

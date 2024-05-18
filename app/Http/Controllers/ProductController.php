@@ -77,11 +77,6 @@ class ProductController extends Controller
         }
     }
 
-    public function edit(Product $product)
-    {
-        //
-    }
-
     public function update(ProductUpdateRequest $request, Product $product)
     {
         if (!$request->hasFile('file')) unset($request['file']);

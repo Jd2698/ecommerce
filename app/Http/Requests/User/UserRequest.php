@@ -22,7 +22,7 @@ class UserRequest extends FormRequest
     {
 
         $this->rules['file'] = ['required', 'image'];
-        $this->rules['role'] = ['required', 'string', 'in:user,admin'];
+        $this->rules['role'] = ['required', 'string', 'in:client,admin'];
 
         return $this->rules;
     }
