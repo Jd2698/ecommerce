@@ -20,9 +20,12 @@ class UserRequest extends FormRequest
 
     public function rules()
     {
-
-        $this->rules['file'] = ['required', 'image'];
         $this->rules['role'] = ['required', 'string', 'in:client,admin'];
+        $this->rules['file'] = ['nullable', 'image'];
+
+        if (!$this->hasFile('file')) {
+            $this->rules['file'] = ['nullable'];
+        }
 
         return $this->rules;
     }

@@ -16,12 +16,6 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
                 <!-- Authentication Links -->
-                <li class="nav-item">
-                    <a class=" nav-link btn text-start" href="{{ route('products.cart') }}">
-                        {{-- <span>Cart</span> --}}
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
-                </li>
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
@@ -38,10 +32,14 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }}
-                        </a>
+                        <div id="navbarDropdown" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" v-pre>
+                            <img src="{{ Auth::user()->file->route }}" alt=""
+                                style="height: 30px; width: 30px; object-fit:cover; border-radius: 50%; ">
+                            <span>
+                                {{ Auth::user()->name }}
+                            </span>
+                        </div>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             @role('admin')
                                 <a class="dropdown-item" href="{{ route('users.index') }}">
@@ -56,6 +54,10 @@
                                     Categories
                                 </a>
                             @endrole
+                            <a class="dropdown-item" href="{{ route('products.cart') }}">
+                                Cart
+                                {{-- <i class="fas fa-shopping-cart"></i> --}}
+                            </a>
 
                             {{-- Logout --}}
                             <a class="dropdown-item" href="{{ route('logout') }}"

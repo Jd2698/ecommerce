@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\Requests\User\UserRequest;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Models\File;
 
 class UserController extends Controller
 {
@@ -34,12 +35,25 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
+        $file = true;
+        if (!$request->hasFile('file')) {
+            unset($request['file']);
+            $file = false;
+        };
+
         try {
             DB::beginTransaction();
             $user = new User($request->all());
             $user->save();
             $user->syncRoles([$request->role]);
-            $this->uploadFile($user, $request);
+
+            if (!$file) {
+                $file = new File(['route' => '/storage/images/users/default.png']);
+                $user->file()->save($file);
+            } else {
+                $this->uploadFile($user, $request);
+                $user->save();
+            }
             DB::commit();
             return response()->json([], 200);
         } catch (\Throwable $th) {
@@ -57,7 +71,6 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user)
     {
         if (!$request->hasFile('file')) unset($request['file']);
-        // dd($request);
 
         try {
             DB::beginTransaction();
