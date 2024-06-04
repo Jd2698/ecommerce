@@ -2,7 +2,7 @@
 	<h2 class="mx-4">{{category.name}}</h2>
 
 	<div class="mx-4 input-group rounded border" style="width: 400px;">
-		<input v-model="buscador" type="search" class="form-control rounded" placeholder="Search" @keyup="buscarLibros" />
+		<input v-model="buscador" type="search" class="p-2 bg-white rounded border-0" style="width: 100%;" placeholder="Search" @keyup="buscarLibros" />
 	</div>
 
 	<section class="container-card-grid">
@@ -41,7 +41,7 @@
 					const { data } = await axios.get(`/products/buscador`, {
 						params: {
 							buscador: buscador.value,
-							category: props.category,
+							category: props.category.id,
 						},
 					});
 					products.value = data.products;

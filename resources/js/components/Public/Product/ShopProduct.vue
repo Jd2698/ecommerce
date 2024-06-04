@@ -19,15 +19,17 @@
 	import { ref, onMounted } from "vue";
 	import { addObject } from "@/helpers/LocalStorage";
 	export default {
-		props: ["product", "session", "user"],
+		props: ["product", "user"],
 		setup(props) {
 			const user_data = ref({});
 			onMounted(() => {
-				user_data.value = JSON.parse(props.user);
+				if (props.user) {
+					user_data.value = JSON.parse(props.user);
+				}
 			});
 
 			const validarSesion = () => {
-				if (!props.session) {
+				if (!props.user) {
 					Swal.fire({
 						title: "¿Iniciar sesión?",
 						text: "Para agregar productos necesita iniciar sesión",

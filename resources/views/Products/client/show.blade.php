@@ -1,3 +1,3 @@
 <x-app>
-    <shop-product :product="{{ $product }}" :session="{{ $session }}" user="{{ Auth::user() }}" />
+    <shop-product :product="{{ $product }}" user="{{ Auth::user() }}" />
 </x-app>

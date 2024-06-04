@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mb-4">
+<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mb-4 fixed-top">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">{{ env('APP_NAME') }}</a>
 

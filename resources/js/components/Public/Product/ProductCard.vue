@@ -10,12 +10,6 @@
 	</template>
 </template>
 
-<script>
-	import { ref, onMounted } from "vue";
-	export default {
-		props: ["products"],
-		setup(props) {
-			return {};
-		},
-	};
+<script setup>
+	const props = defineProps(["products"]);
 </script>

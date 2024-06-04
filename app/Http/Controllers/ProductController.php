@@ -24,10 +24,17 @@ class ProductController extends Controller
     public function buscador(Request $request)
     {
         $buscador = $request->input('buscador');
-        $category = $request->input('category');
+        $category_id = $request->input('category');
 
-        $products = Product::with('file')->where('category_id', $category["id"])->Where('name', 'like', '%' . $buscador . '%')->get();
-        return response()->json(['products' => $products], 200);
+        $category = Category::find($category_id);
+
+        if (!$category) {
+            $products = Product::with('file')->Where('name', 'like', '%' . $buscador . '%')->get();
+            return response()->json(['products' => $products], 200);
+        } else {
+            $products = Product::with('file')->where('category_id', $category_id)->Where('name', 'like', '%' . $buscador . '%')->get();
+            return response()->json(['products' => $products], 200);
+        }
     }
 
     public function cart()
@@ -70,8 +77,7 @@ class ProductController extends Controller
     {
         $product->load('file');
         if (!$request->ajax()) {
-            $session = auth()->check();
-            return view('Products.client.show', compact('product', 'session'));
+            return view('Products.client.show', compact('product'));
         } else {
             return response()->json(['product' => $product], 200);
         }

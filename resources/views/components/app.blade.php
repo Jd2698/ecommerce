@@ -21,10 +21,8 @@
     {{-- Menu --}}
     <x-menu />
 
-
     {{-- Content --}}
-    <main id="app">
-        {{-- <x-alerts /> --}}
+    <main id="app" class="mt-5 pt-5">
         {{ $slot }}
     </main>
 
