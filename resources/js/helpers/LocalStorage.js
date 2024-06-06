@@ -1,16 +1,10 @@
-export const getProductsObject = user_id => {
-	let data = []
-	for (let i = 0; i < localStorage.length; i++) {
-		let clave = localStorage.key(i)
-		if (!clave.includes('invoiceTotal') && clave.startsWith(`${user_id}-`)) {
-			let itemData = localStorage.getItem(clave)
+export const getProducts = user_id => {
+	if (localStorage.getItem(user_id)) {
+		let itemData = localStorage.getItem(user_id)
 
-			let obj = JSON.parse(itemData)
-
-			data.push(obj)
-		}
+		let obj = JSON.parse(itemData)
+		return obj
 	}
-	return data
 }
 
 export const deleteObject = key => {
@@ -21,36 +15,19 @@ export const addObject = (key, obj) => {
 	localStorage.setItem(key, JSON.stringify(obj))
 }
 
-const addTotalObject = (key, value) => {
-	localStorage.setItem(key, value)
-}
-
 export const getObject = index => {
 	let item = JSON.parse(localStorage.getItem(index))
 	return item
 }
 
 export const addTotal = user_id => {
-	let total = 0
-	for (let i = 0; i < localStorage.length; i++) {
-		const clave = localStorage.key(i)
-		if (!clave.includes('invoiceTotal') && clave.startsWith(`${user_id}-`)) {
-			let itemData = localStorage.getItem(clave)
-			let obj = JSON.parse(itemData)
+	if (localStorage.getItem(user_id)) {
+		const itemData = localStorage.getItem(user_id)
+		const obj = JSON.parse(itemData)
 
-			total += obj.subtotal
-		}
-	}
-	let key = `${user_id}-invoiceTotal`
-	addTotalObject(key, total)
-	return total
-}
+		const total = obj.reduce((cant, product) => product.subtotal + cant, 0)
 
-export const deleteObjects = user_id => {
-	for (let i = 0; i < localStorage.length; i++) {
-		let clave = localStorage.key(i)
-		if (clave.startsWith(`${user_id}-`)) {
-			localStorage.removeItem(clave)
-		}
+		localStorage.setItem('invoiceTotal', total)
+		return total
 	}
 }

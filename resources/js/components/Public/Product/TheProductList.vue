@@ -1,68 +1,37 @@
 <template>
 	<h2 class="mx-4">{{category.name}}</h2>
 
-	<div class="mx-4 input-group rounded border" style="width: 400px;">
-		<input v-model="buscador" type="search" class="p-2 bg-white rounded border-0" style="width: 100%;" placeholder="Search" @keyup="buscarLibros" />
-	</div>
+	<!-- search component -->
+	<product-search @updateSearchStatus="updateSearchStatus" :categories="[category]" />
 
-	<section class="container-card-grid">
-		<product-card :products="products" />
-	</section>
+	<template v-if="!searchStatus">
+		<section class="container-card-grid">
+			<product-card :products="products" />
+		</section>
+	</template>
 </template>
 
-<script>
+<script setup>
 	import { ref, onMounted } from "vue";
 	import ProductCard from "./ProductCard.vue";
-	export default {
-		components: {
-			ProductCard,
-		},
-		props: ["category"],
-		setup(props) {
-			const products = ref(null);
-			const buscador = ref("");
-			const setTimeoutBuscador = ref(null);
+	import ProductSearch from "./ProductSearch.vue";
+	const props = defineProps(["category"]);
 
-			onMounted(() => getProducts());
+	const products = ref(null);
+	const searchStatus = ref(false);
 
-			const getProducts = async () => {
-				try {
-					const { data } = await axios.get(
-						`/products/home/${props.category.id}`
-					);
-					products.value = data.products;
-				} catch (error) {
-					console.log(error);
-				}
-			};
-
-			const getProductsBuscador = async () => {
-				try {
-					const { data } = await axios.get(`/products/buscador`, {
-						params: {
-							buscador: buscador.value,
-							category: props.category.id,
-						},
-					});
-					products.value = data.products;
-				} catch (error) {
-					console.log(error);
-				}
-			};
-
-			const buscarLibros = () => {
-				clearTimeout(setTimeoutBuscador.value);
-
-				setTimeoutBuscador.value = setTimeout(() => {
-					if (buscador.value === "") {
-						getProducts();
-					} else {
-						getProductsBuscador();
-					}
-				}, 360);
-			};
-
-			return { products, getProducts, buscador, buscarLibros };
-		},
+	const updateSearchStatus = (value) => {
+		searchStatus.value = value;
 	};
+
+	const getProducts = async () => {
+		try {
+			const { data } = await axios.get(`/products/home/${props.category.id}`);
+			products.value = data.products;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	onMounted(() => getProducts());
 </script>

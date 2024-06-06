@@ -1,3 +1,69 @@
+<script setup>
+	import { ref, onMounted, computed } from "vue";
+	import {
+		addObject,
+		getObject,
+		getProducts,
+		deleteObject,
+		addTotal,
+	} from "@/helpers/LocalStorage";
+
+	const props = defineProps(["user"]);
+
+	const user_data = ref(JSON.parse(props.user));
+	const products = ref(getProducts(user_data.value.id));
+	const total = ref(addTotal(user_data.value.id));
+
+	const decreaseProduct = (product) => {
+		if (product.quantity > 1) {
+			product.quantity = product.quantity - 1;
+			product.subtotal = product.price * product.quantity;
+
+			products.value = products.value.map((p) =>
+				p.id == product.id ? { ...p, ...product } : p
+			);
+
+			addObject(user_data.value.id, products.value);
+			total.value = addTotal(user_data.value.id);
+		}
+	};
+
+	const increaseProduct = (product) => {
+		if (product.stock > product.quantity) {
+			product.quantity = product.quantity + 1;
+			product.subtotal = product.price * product.quantity;
+
+			products.value = products.value.map((p) =>
+				p.id == product.id ? { ...p, ...product } : p
+			);
+
+			addObject(user_data.value.id, products.value);
+			total.value = addTotal(user_data.value.id);
+		}
+	};
+
+	const removeProduct = (productId) => {
+		products.value = products.value.filter((p) => p.id != productId);
+
+		addObject(user_data.value.id, products.value);
+		total.value = addTotal(user_data.value.id);
+	};
+
+	const cleanCart = (productId) => {
+		deleteObject(user_data.value.id);
+
+		products.value = [];
+		total.value = 0;
+	};
+
+	const buyAlert = () => {
+		Swal.fire({
+			title: "¡Aún no está disponible!",
+			confirmButtonColor: "#496",
+		});
+	};
+</script>
+
 <template>
 	<div class="d-flex gap-4 mx-4">
 		<li class="list-unstyled container-items-cart">
@@ -27,86 +93,13 @@
 		<div class="container-info">
 			<p>Total: ${{total}}</p>
 			<div class="btn-group" style="width: 100%">
-				<button class="btn btn-success" @click="buyAlert">Realizar compra</button>
-				<button class="btn btn-danger" @click="cleanCart(user_data.id)">Limpiar carrito</button>
+				<button class="btn btn-light" @click="buyAlert">Realizar compra</button>
+				<button class="btn btn-dark" @click="cleanCart(user_data.id)">Limpiar carrito</button>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script setup>
-	import {
-		addObject,
-		getObject,
-		getProductsObject,
-		deleteObject,
-		deleteObjects,
-		addTotal,
-	} from "@/helpers/LocalStorage";
-
-	import { ref, onMounted, computed } from "vue";
-
-	const props = defineProps(["user"]);
-
-	const user_data = ref({});
-	const products = ref([]);
-	const total = ref(0);
-
-	const decreaseProduct = (product) => {
-		if (product.quantity > 1) {
-			let newQuantity = product.quantity - 1;
-			let newSubtotal = product.price * newQuantity;
-
-			product.quantity = newQuantity;
-			product.subtotal = newSubtotal;
-
-			const key = `${user_data.value.id}-${product.id}`;
-			addObject(key, product);
-			total.value = addTotal(user_data.value.id);
-		}
-	};
-	const increaseProduct = (product) => {
-		if (product.stock > product.quantity) {
-			let newQuantity = product.quantity + 1;
-			let newSubtotal = product.price * newQuantity;
-
-			product.quantity = newQuantity;
-			product.subtotal = newSubtotal;
-
-			const key = `${user_data.value.id}-${product.id}`;
-			addObject(key, product);
-			total.value = addTotal(user_data.value.id);
-		}
-	};
-
-	const removeProduct = (productId) => {
-		const key = `${user_data.value.id}-${productId}`;
-		deleteObject(key);
-
-		products.value = getProductsObject(user_data.value.id);
-		total.value = addTotal(user_data.value.id);
-	};
-
-	const cleanCart = (productId) => {
-		deleteObjects(productId);
-		products.value = getProductsObject(user_data.value.id);
-		total.value = addTotal(user_data.value.id);
-	};
-	const buyAlert = () => {
-		Swal.fire({
-			title: "¡Aún no está disponible!",
-			confirmButtonColor: "#496",
-		});
-	};
-
-	const index = () => {
-		user_data.value = JSON.parse(props.user);
-		products.value = getProductsObject(user_data.value.id);
-		total.value = addTotal(user_data.value.id);
-	};
-
-	onMounted(() => index());
-</script>
 
 <style scoped>
 .container-items-cart {

@@ -1,3 +1,70 @@
+<script setup>
+	import { ref, onMounted } from "vue";
+	import { addObject, getObject } from "@/helpers/LocalStorage";
+	const props = defineProps(["product", "user"]);
+
+	const user_data = ref({});
+
+	const validarSesion = () => {
+		if (!props.user) {
+			Swal.fire({
+				title: "¿Iniciar sesión?",
+				text: "Para agregar productos necesita iniciar sesión",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#367932",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Iniciar sesión",
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = "/login";
+				}
+			});
+		} else {
+			const p = {
+				id: props.product.id,
+				name: props.product.name,
+				description: props.product.description,
+				price: props.product.price,
+				stock: props.product.stock,
+				file: props.product.file,
+				quantity: 1,
+				subtotal: props.product.price,
+			};
+
+			const cart = getObject(user_data.value.id);
+
+			if (cart) {
+				if (cart.some((product) => p.id == product.id)) {
+					const pro = cart.find((product) => product.id == p.id);
+
+					pro.quantity = pro.quantity + 1;
+					pro.subtotal = pro.quantity * pro.price;
+				} else {
+					cart.push(p);
+				}
+				addObject(user_data.value.id, cart);
+			} else {
+				addObject(user_data.value.id, [p]);
+			}
+
+			Swal.fire({
+				position: "top-end",
+				icon: "success",
+				title: "se agregó al carrito",
+				showConfirmButton: false,
+				timer: 800,
+			});
+		}
+	};
+
+	onMounted(() => {
+		if (props.user) {
+			user_data.value = JSON.parse(props.user);
+		}
+	});
+</script>
+
 <template>
 	<div class="container-shop">
 		<section class="container-shop-item">
@@ -14,55 +81,6 @@
 		</section>
 	</div>
 </template>
-
-<script>
-	import { ref, onMounted } from "vue";
-	import { addObject } from "@/helpers/LocalStorage";
-	export default {
-		props: ["product", "user"],
-		setup(props) {
-			const user_data = ref({});
-			onMounted(() => {
-				if (props.user) {
-					user_data.value = JSON.parse(props.user);
-				}
-			});
-
-			const validarSesion = () => {
-				if (!props.user) {
-					Swal.fire({
-						title: "¿Iniciar sesión?",
-						text: "Para agregar productos necesita iniciar sesión",
-						icon: "warning",
-						showCancelButton: true,
-						confirmButtonColor: "#367932",
-						cancelButtonColor: "#d33",
-						confirmButtonText: "Iniciar sesión",
-					}).then((result) => {
-						if (result.isConfirmed) {
-							window.location.href = "/login";
-						}
-					});
-				} else {
-					props.product.quantity = 1;
-					props.product.subtotal = props.product.price;
-
-					const key = `${user_data.value.id}-${props.product.id}`;
-					addObject(key, props.product);
-
-					Swal.fire({
-						position: "top-end",
-						icon: "success",
-						title: "se agregó al carrito",
-						showConfirmButton: false,
-						timer: 800,
-					});
-				}
-			};
-			return { validarSesion };
-		},
-	};
-</script>
 
 <style>
 .container-shop {
